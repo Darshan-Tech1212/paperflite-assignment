@@ -1,1 +1,46 @@
+import java.util.*;
 
+public class Problem2_RemoveKDigits {
+
+    public static String removeKdigits(String num, int k) {
+        Stack<Character> stack = new Stack<>();
+
+        for (char digit : num.toCharArray()) {
+            while (!stack.isEmpty() && k > 0 && stack.peek() > digit) {
+                stack.pop();
+                k--;
+            }
+            stack.push(digit);
+        }
+
+        // Remove remaining digits
+        while (k > 0 && !stack.isEmpty()) {
+            stack.pop();
+            k--;
+        }
+
+        // Build result
+        StringBuilder result = new StringBuilder();
+        for (char c : stack) {
+            result.append(c);
+        }
+
+        // Remove leading zeros
+        while (result.length() > 0 && result.charAt(0) == '0') {
+            result.deleteCharAt(0);
+        }
+
+        return result.length() == 0 ? "0" : result.toString();
+    }
+
+    public static void main(String[] args) {
+        // Example 1
+        System.out.println("Output 1: " + removeKdigits("1432219", 3)); // Expected: 1219
+
+        // Example 2
+        System.out.println("Output 2: " + removeKdigits("10200", 1)); // Expected: 200
+
+        // Example 3
+        System.out.println("Output 3: " + removeKdigits("10", 2)); // Expected: 0
+    }
+}
